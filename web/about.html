@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>majala - managed java launcher</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="wrapper">
+  <div id="content">
+    <div id="header">
+      <div id="logo">
+        <h1>majala</h1>
+        <h4>managed java launcher</h4>
+      </div>
+      <div id="links">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="howto.html">How to</a></li>
+          <li><a href="downloads.html">Downloads</a></li>
+        </ul>
+      </div>
+    </div>
+    <div id="mainimg">
+      <h3>Java launched safely</h3>
+      <h4>by using managed .NET code</h4>
+    </div>
+    <div id="contentarea">
+      <div id="leftbar">
+        <h2 id="why">Why majala</h2>
+        <p>
+          majala is actively maintained and was initially created for an industrial
+          strength Java application. That means that majala supports a wide range of
+          Windows platforms, starting with Windows 2000. In fact, majala runs
+          on every Windows system that has at least the .NET Framework 2.0
+          installed (of course majala works with newer versions of the .NET
+          Framework, too). Furthermore, majala is available in 32 and 64 bit
+          flavours. 
+        </p>
+        <br />
+        <h2 id="building">Building</h2>
+        <p>
+          If there may be any reason to build majala by your own, the whole
+          source code is available. The idea is that users of majala are usually
+          Java developers that may not have much knowledge of C# or the .NET
+          Framework. Building is quite easy because everything that is needed (i. e.
+          third party libraries) for building is contained in the source code
+          distribution of majala (and of course in the Subversion repositotry).
+          Furthermore the freely availabe Visual C# Express is sufficient to build
+          majala (the full-fledged Visual Studio is not neccessary). 
+        </p>
+        <br />
+        <h2 id="types">Application types</h2>
+        <p>
+          majala supports various application types, i. e. console applications,
+          graphical applications and Windows services. For every application type
+          majala provides a separate exe-wrapper.
+        </p>
+        <br />
+        <h2 id="bitness">Bitness</h2>
+        <p>
+          For all supported application types majala provies a 32 and 64 bit
+          exe-wrapper. Furthermore a so called AnyCPU exe-wrapper is provided
+          that runs as a 64 bit process on a 64 bit system and as a 32 bit
+          process on a 32 bit system.
+        </p>
+        <br />
+        <h2 id="configuration">Configuration</h2>
+        <p>
+          majala is configured with a simple line oriented configuration file (like
+          a file containing Java properties) or with an XML file. This file can be
+          read as a regular file from the file system or can be embedded in the
+          majala exe-wrapper (so it may be hidden from the user).
+        </p>
+        <br />
+        <h2 id="logging">Logging</h2>
+        <p>
+          At runtime majala uses the logging framework <a href="http://logging.apache.org/log4net">log4net</a>
+          (a port of the sophisticated <a href="http://logging.apache.org/log4j">log4j</a>
+          to the .NET Framework). In case of problems a detailed log of all majala
+          activities, like the selection of the JVM, can be logged and analyzed.
+          By default majala does not print any log messages, but just some
+          simple steps are required to let majala produce a verbose log at runtime.
+        </p>
+        <br />
+      </div>
+      <div id="rightbar">
+        <h2>Topics</h2>
+        <p>
+          <a href="#why">Why majala</a><br />
+          <a href="#building">Building</a><br />
+          <a href="#types">Application types</a><br />
+          <a href="#bitness">Bitness</a><br />
+          <a href="#configuration">Configuration</a><br />
+          <a href="#logging">Logging</a><br />
+        </p>
+      </div>
+    </div>
+    <div id="bottom">
+      <div id="email">
+      <script language="JavaScript" type="text/JavaScript">
+        var em1 = "michaelknigge"
+        var em2 = "@"
+        var em3 = "sourceforge.net"
+        document.write('<a href=\"mailto:' + em1 + em2 + em3 +'\">Click here to contact me</a>');
+      </script>
+      </div>
+      <div id="validtext">
+        <p>Valid <a href="http://validator.w3.org/check?uri=referer">XHTML</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
