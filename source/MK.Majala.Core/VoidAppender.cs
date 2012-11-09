@@ -1,13 +1,11 @@
 ﻿namespace MK.Majala.Core
 {
     using System;
-    using System.IO;
-    using System.Text;
 
     /// <summary>
-    /// An IAppender that writes log messages to the console (standard error stream).
+    /// An IAppender that does nothing.
     /// </summary>
-    public class ConsoleAppender : IAppender
+    public class VoidAppender : IAppender
     {
         /// <summary>
         /// Writes a log message to the standard error stream.
@@ -15,14 +13,6 @@
         /// <param name="message">Message to be written.</param>
         public void Append(string message)
         {
-            try
-            {
-                Console.Error.WriteLine(message);
-            }
-            catch (IOException)
-            {
-                // We ignore any errors - an error while logging should not harm the application...
-            }
         }
 
         /// <summary>

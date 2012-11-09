@@ -1,38 +1,40 @@
 ﻿namespace MK.Majala.Core
 {
     using System;
+    using System.Globalization;
 
     /// <summary>
     /// A logger for log/info/debug messages.
     /// </summary>
-    public class Logger
+    public static class Logger
     {
-        private IAppender appender;
+        private static IAppender appender = new VoidAppender();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Logger" /> class.
+        /// Gets the minimum Java Version required for the application.
         /// </summary>
-        /// <param name="appender">An IAppender for the log messages.</param>
-        public Logger(IAppender appender)
+        public static IAppender Appender
         {
-            this.appender = appender;
+            get { return Logger.appender; }
+            set { Logger.appender = value; }
         }
 
         /// <summary>
         /// Appends a message to the log. The message will get prefixed with the current date and time.
         /// </summary>
         /// <param name="message">Message to be appended.</param>
-        public void Log(string message)
+        public static void Log(string message)
         {
-            this.appender.Append(DateTime.Now.ToString("u") + " : " + message);
+            Logger.appender.Append(DateTime.Now.ToString("u", CultureInfo.CurrentCulture) + " : " + message);
         }
 
         /// <summary>
         /// Closes the IAppender.
         /// </summary>
-        public void Close()
+        public static void Close()
         {
-            this.appender.Dispose();
+            Logger.appender.Dispose();
+            Logger.Appender = new VoidAppender();
         }
     }
 }
