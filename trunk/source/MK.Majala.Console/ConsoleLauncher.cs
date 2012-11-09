@@ -10,9 +10,9 @@
     public class ConsoleLauncher : Launcher
     {
         [DllImport("kernel32.dll")]
-        public static extern bool SetConsoleCtrlHandler(HandlerRoutine handler, bool addOrRemove);
+        private static extern bool SetConsoleCtrlHandler(HandlerRoutine handler, bool addOrRemove);
 
-        public delegate bool HandlerRoutine(CtrlTypes CtrlType);
+        private delegate bool HandlerRoutine(CtrlTypes CtrlType);
 
         private enum CtrlTypes
         {
