@@ -14,7 +14,7 @@
         /// <param name="args">Command line arguments.</param>
         public static void Main(string[] args)
         {
-            new ConsoleLauncher().RunApplication(args);
+            ConsoleLauncher.Instance.RunApplication(args);
         }
     }
 }
