@@ -19,6 +19,8 @@
         {
             //// TODO: Find the location of the configuration file (external file overrides the embedded file!)
             //// TODO: Determine the format of the file and load it (XML or text).
+
+            //// TODO: Throw MajalaException if something goes wrong!
             return new Settings();
         }
     }
