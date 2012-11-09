@@ -10,6 +10,8 @@
     /// </summary>
     public abstract class Launcher
     {
+        private Logger logger;
+
         /// <summary>
         /// Runs the Java program.
         /// </summary>
@@ -19,6 +21,9 @@
             try
             {
                 Settings settings = SettingsLoader.LoadSettings();
+
+                // TODO determine real logger from settings...
+                this.logger = new Logger(new ConsoleAppender());
 
                 if (settings.WorkingDirectory.Length != 0)
                     Directory.SetCurrentDirectory(settings.WorkingDirectory);
@@ -38,6 +43,8 @@
             {
                 this.ShowError(ex.Message);
             }
+
+            this.logger.Close();
         }
 
         /// <summary>

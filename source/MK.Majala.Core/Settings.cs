@@ -27,7 +27,7 @@
         }
 
         /// <summary>
-        /// Gets the minimum Java version required for the application.
+        /// Gets the minimum Java Version required for the application.
         /// </summary>
         public string JavaVersionMin
         {
@@ -36,7 +36,7 @@
         }
 
         /// <summary>
-        /// Gets the maximum Java version allowed for the application.
+        /// Gets the maximum Java Version allowed for the application.
         /// </summary>
         public string JavaVersionMax
         {
