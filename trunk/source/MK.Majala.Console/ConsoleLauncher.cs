@@ -9,12 +9,16 @@
     /// </summary>
     public class ConsoleLauncher : Launcher
     {
-        [DllImport("kernel32.dll")]
-        private static extern bool SetConsoleCtrlHandler(HandlerRoutine handler, bool addOrRemove);
+        /// <summary>
+        /// The instance on this singleton class.
+        /// </summary>
+        public static readonly ConsoleLauncher Instance = new ConsoleLauncher();
+
+        private ConsoleLauncher()
+        {
+        }
 
         private delegate bool HandlerRoutine(CtrlTypes CtrlType);
-
-        private static readonly ConsoleLauncher instance = new ConsoleLauncher();
 
         private enum CtrlTypes
         {
@@ -23,18 +27,6 @@
             CTRL_CLOSE_EVENT = 2,
             CTRL_LOGOFF_EVENT = 5,
             CTRL_SHUTDOWN_EVENT = 6
-        }
-
-        private ConsoleLauncher()
-        {
-        }
-
-        /// <summary>
-        /// Gets the singleton instance of the ConsoleLauncher.
-        /// </summary>
-        public static ConsoleLauncher Instance
-        {
-            get { return instance; }
         }
 
         /// <summary>
@@ -56,6 +48,9 @@
             //// x-check this later....
             SetConsoleCtrlHandler(new HandlerRoutine(ConsoleCtrlHandler), true);
         }
+
+        [DllImport("kernel32.dll")]
+        private static extern bool SetConsoleCtrlHandler(HandlerRoutine handler, bool addOrRemove);
 
         /// <summary>
         /// Handles the console control event (i. e. "CTRL-C" or "CTRL-Break").
