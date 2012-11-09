@@ -1,6 +1,7 @@
 ﻿namespace MK.Majala.Core
 {
     using System;
+    using System.IO;
     using System.Text;
 
     /// <summary>
@@ -18,7 +19,7 @@
             {
                 Console.Error.WriteLine(message);
             }
-            catch
+            catch (IOException)
             {
                 // We ignore any errors - an error while logging should not harm the application...
             }
