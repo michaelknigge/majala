@@ -29,7 +29,17 @@
         /// </summary>
         public void Dispose()
         {
+            this.Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Disposes this object.
+        /// </summary>
+        /// <param name="disposing">true if managed and unnamagend resources should be freed. false if only unmanages resources should be freed.</param>
+        private void Dispose(bool disposing)
+        {
+            // This methon does only exist to make FxCop happy (rRule CA1063)...
         }
     }
 }
