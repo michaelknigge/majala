@@ -117,7 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DirectoryContainsNoJava" xml:space="preserve">
+    <value>The directory ´{0}´ does not contain a valid Java installation.</value>
+  </data>
   <data name="ErrorSettingWorkingDirectory" xml:space="preserve">
     <value>The working directory could not be set.</value>
+  </data>
+  <data name="NoSuitableJavaFoundV1" xml:space="preserve">
+    <value>No {0} bit Java version found.</value>
+  </data>
+  <data name="NoSuitableJavaFoundV2" xml:space="preserve">
+    <value>No {0} bit Java version found that is older that version {1}.</value>
+  </data>
+  <data name="NoSuitableJavaFoundV3" xml:space="preserve">
+    <value>No {0} bit Java version found that is older than version {1} and not newer No {0} bit Java version found that is older than version {1} and not newer than version {2}.</value>
   </data>
 </root>
