@@ -15,13 +15,13 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FileAppender" /> class.
         /// </summary>
-        /// <param name="filename">Filename of the log file.</param>
-        public FileAppender(string filename)
+        /// <param name="fileName">Filename of the log file.</param>
+        public FileAppender(string fileName)
         {
             try
             {
                 this.writer = null;
-                this.writer = new StreamWriter(filename, true);
+                this.writer = new StreamWriter(fileName, true);
             }
             catch (UnauthorizedAccessException)
             {

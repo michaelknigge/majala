@@ -11,7 +11,7 @@
         private static IAppender appender = new VoidAppender();
 
         /// <summary>
-        /// Gets the minimum Java Version required for the application.
+        /// Gets or sets the minimum Java Version required for the application.
         /// </summary>
         public static IAppender Appender
         {
