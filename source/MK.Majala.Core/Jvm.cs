@@ -147,6 +147,11 @@
         /// <param name="disposing">true if managed and unnamagend resources should be freed. false if only unmanages resources should be freed.</param>
         private void Dispose(bool disposing)
         {
+            if (disposing)
+            {
+                // dispose managed resources here...
+            }
+
             if (this.jvm != null)
                 FreeLibrary(this.jvm);
         }

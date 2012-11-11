@@ -2,7 +2,9 @@
 {
     using System;
     using System.IO;
+    using System.Security;
     using System.Text;
+    using MK.Majala.Core.Properties;
 
     /// <summary>
     /// This abstract class runs majala. Application type specific functions (like
@@ -23,7 +25,7 @@
             try
             {
                 // Each of these methods has to throw a MajalaException on errors (which holds
-                // the "real" exception as a inner exception (if there is one)...
+                // the real exception as an inner exception (if there is one)...
                 this.LoadSettings();
                 this.InitializeLogger();
                 this.SetWorkingDirectory();
@@ -66,6 +68,7 @@
         /// </summary>
         private void LoadSettings()
         {
+            //// TODO throw MajalaException if needed!
             this.settings = SettingsLoader.LoadSettings();
         }
 
@@ -75,6 +78,7 @@
         private void InitializeLogger()
         {
             // TODO determine real logger from settings...
+            //// TODO throw MajalaException if needed!
             Logger.Appender = new ConsoleAppender();
         }
 
@@ -83,16 +87,34 @@
         /// </summary>
         private void SetWorkingDirectory()
         {
-            if (this.settings.WorkingDirectory.Length != 0)
-                Directory.SetCurrentDirectory(this.settings.WorkingDirectory);
+            //// TODO throw MajalaException if needed!
+            try
+            {
+                if (this.settings.WorkingDirectory.Length != 0)
+                    Directory.SetCurrentDirectory(this.settings.WorkingDirectory);
+            }
+            catch (IOException e)
+            {
+                throw new MajalaException(Resources.ErrorSettingWorkingDirectory, e);
+            }
+            catch (ArgumentException e)
+            {
+                throw new MajalaException(Resources.ErrorSettingWorkingDirectory, e);
+            }
+            catch (SecurityException e)
+            {
+                throw new MajalaException(Resources.ErrorSettingWorkingDirectory, e);
+            }
         }
 
         /// <summary>
         /// Parses all command line arguments.
         /// </summary>
+        /// <param name="args">All arguments from the command line.</param>
         private void ParseCommandLineArguments(string[] args)
         {
             // TODO: implement ParseCommandLineArguments().
+            //// TODO throw MajalaException if needed!
         }
 
         /// <summary>
@@ -100,6 +122,7 @@
         /// </summary>
         private void LoadJavaVirtualMachine()
         {
+            //// TODO throw MajalaException if needed!
             if (this.settings.JavaDirectory.Length == 0)
                 this.jvm = JvmChooser.LoadJvm(this.settings.JavaVersionMin, this.settings.JavaVersionMax);
             else
@@ -111,6 +134,7 @@
         /// </summary>
         private void RegisterHooks()
         {
+            //// TODO throw MajalaException if needed!
             // TODO: implement RegisterHooks().
         }
 
@@ -119,6 +143,7 @@
         /// </summary>
         private void LoadAndInvokeMainClass()
         {
+            //// TODO throw MajalaException if needed!
             // TODO: implement LoadAndInvokeMainClass().
         }
     }

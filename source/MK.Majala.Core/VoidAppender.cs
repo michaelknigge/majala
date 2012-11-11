@@ -30,7 +30,10 @@
         /// <param name="disposing">true if managed and unnamagend resources should be freed. false if only unmanages resources should be freed.</param>
         private void Dispose(bool disposing)
         {
-            // This methon does only exist to make FxCop happy (rule CA1063)...
+            if (disposing)
+            {
+                // dispose managed resources here...
+            }
         }
     }
 }
