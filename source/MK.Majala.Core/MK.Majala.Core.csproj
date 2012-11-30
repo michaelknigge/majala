@@ -60,8 +60,10 @@
     <Compile Include="ConsoleAppender.cs" />
     <Compile Include="FileAppender.cs" />
     <Compile Include="IAppender.cs" />
+    <Compile Include="JavaVersionComparer.cs" />
     <Compile Include="Jvm.cs" />
     <Compile Include="JvmChooser.cs" />
+    <Compile Include="JvmCollection.cs" />
     <Compile Include="Launcher.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="MajalaException.cs" />
