@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Majala.Service", "MK.Maj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Majala.Windows", "MK.Majala.Windows\MK.Majala.Windows.csproj", "{D32C4382-6F27-4376-A2EC-18C5166E8D48}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Majala.Core.Test", "MK.Majala.Core.Test\MK.Majala.Core.Test.csproj", "{A2CBD2DA-78D2-48AF-894B-822C15EDD6F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{D32C4382-6F27-4376-A2EC-18C5166E8D48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D32C4382-6F27-4376-A2EC-18C5166E8D48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D32C4382-6F27-4376-A2EC-18C5166E8D48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2CBD2DA-78D2-48AF-894B-822C15EDD6F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2CBD2DA-78D2-48AF-894B-822C15EDD6F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2CBD2DA-78D2-48AF-894B-822C15EDD6F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2CBD2DA-78D2-48AF-894B-822C15EDD6F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

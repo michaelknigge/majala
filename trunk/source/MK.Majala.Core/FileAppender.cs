@@ -11,6 +11,7 @@
     public class FileAppender : IAppender
     {
         private TextWriter writer;
+        private bool isDisposed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileAppender" /> class.
@@ -20,7 +21,6 @@
         {
             try
             {
-                this.writer = null;
                 this.writer = new StreamWriter(fileName, true);
             }
             catch (UnauthorizedAccessException)
@@ -83,6 +83,11 @@
         /// <param name="disposing">true if managed and unnamagend resources should be freed. false if only unmanages resources should be freed.</param>
         private void Dispose(bool disposing)
         {
+            if (this.isDisposed)
+                return;
+            else
+                this.isDisposed = true;
+
             try
             {
                 if (disposing && this.writer != null)

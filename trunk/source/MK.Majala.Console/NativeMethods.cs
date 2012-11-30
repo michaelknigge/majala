@@ -53,6 +53,7 @@
         /// <param name="addOrRemove">true if the handler shall be installed, false if the handler is to be removed.</param>
         /// <returns>True if the handler was added/removed successfully.</returns>
         [DllImport("kernel32.dll")]
-        internal static extern bool SetConsoleCtrlHandler(HandlerRoutine handler, bool addOrRemove);
+        [return: MarshalAsAttribute(UnmanagedType.Bool)]
+        internal static extern bool SetConsoleCtrlHandler(HandlerRoutine handler, [MarshalAs(UnmanagedType.Bool)] bool addOrRemove);
     }
 }
