@@ -6,7 +6,7 @@
     /// <summary>
     /// This class holds some native Methods.
     /// </summary>
-    internal class NativeMethods
+    internal static class NativeMethods
     {
         [DllImport("kernel32.dll")]
         internal static extern IntPtr LoadLibrary(string fn);
