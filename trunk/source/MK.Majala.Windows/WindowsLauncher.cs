@@ -1,7 +1,9 @@
-﻿namespace MK.Majala.Core
+﻿namespace MK.Majala.Windows
 {
     using System;
     using System.Text;
+    using MK.Majala.Core;
+    using MK.Majala.Windows.Properties;
 
     /// <summary>
     /// The Launcher for GUI applications.
@@ -15,13 +17,7 @@
         /// <param name="message">The message to be shown.</param>
         public override void ShowError(string message)
         {
-            // TODO MessageBox and/or Task Dialog
-
-            // http://www.codeproject.com/Articles/49268/Windows-7-New-Features-Explained-Using-NET
-            // http://archive.msdn.microsoft.com/WindowsAPICodePack
-            // http://www.codeproject.com/Tips/247358/TaskDilaog-via-Windows-API-Code-Pack-for-Microsoft
-            // http://www.codeproject.com/Articles/17026/TaskDialog-for-WinForms
-            // http://www.codeproject.com/Articles/21276/Vista-TaskDialog-Wrapper-and-Emulator
+            MessageBoxFactory.Create().ShowError(Resources.ErrorBoxCaption, message);
         }
 
         /// <summary>
@@ -29,6 +25,7 @@
         /// </summary>
         public override void RegisterShutdownHook()
         {
+            // TODO: Should we react on a windows shutdown event?
         }
     }
 }
