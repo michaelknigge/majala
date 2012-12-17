@@ -1,7 +1,8 @@
-﻿namespace MK.Majala.Core
+﻿namespace MK.Majala.Service
 {
     using System;
     using System.Text;
+    using MK.Majala.Core;
 
     /// <summary>
     /// The Launcher for Windows services.
