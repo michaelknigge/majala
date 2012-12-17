@@ -14,8 +14,7 @@
         [STAThread]
         public static void Main()
         {
-            //new WindowsLauncher().RunApplication(Environment.GetCommandLineArgs());
-            new WindowsLauncher().ShowError("huhuhuu");
+            new WindowsLauncher().RunApplication(Environment.GetCommandLineArgs());
         }
     }
 }
