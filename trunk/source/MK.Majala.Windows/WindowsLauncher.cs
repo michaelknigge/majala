@@ -2,6 +2,7 @@
 {
     using System;
     using System.Text;
+    using System.Windows.Forms;
     using MK.Majala.Core;
     using MK.Majala.Windows.Properties;
 
@@ -17,7 +18,7 @@
         /// <param name="message">The message to be shown.</param>
         public override void ShowError(string message)
         {
-            MessageBoxFactory.Create().ShowError(Resources.ErrorBoxCaption, message);
+            MessageBox.Show(message, Resources.ErrorBoxCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         /// <summary>
