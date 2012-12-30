@@ -3,19 +3,16 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Globalization;
     using System.IO;
     using Microsoft.Win32;
+    using MK.Majala.Core.Properties;
 
     /// <summary>
     /// This class holds a list of available JVMs.
     /// </summary>
     public class JvmCollection
     {
-        /// <summary>
-        /// List of all successfully added custom Java versions.
-        /// </summary>
-        private List<string> customJvms;
-
         /// <summary>
         /// Key-Value Collection of installed Java versions (key = JAVA_HOME directory, value = version).
         /// </summary>
@@ -36,24 +33,12 @@
         /// <param name="addInstalled">True if all installed JVMs should be added automatically.</param>
         public JvmCollection(bool addInstalled)
         {
-            this.customJvms = new List<string>();
             this.installedJvms = new SortedDictionary<string, string>(new JavaVersionComparer());
 
             if (addInstalled)
             {
                 this.AddVirtualMachinesFromRegistry(@"SOFTWARE\JavaSoft\Java Development Kit");
                 this.AddVirtualMachinesFromRegistry(@"SOFTWARE\JavaSoft\Java Runtime Environment");
-            }
-        }
-
-        /// <summary>
-        /// Gets a read-only collection of all custom Java versions.
-        /// </summary>
-        public ReadOnlyCollection<string> CustomVersions
-        {
-            get
-            {
-                return new ReadOnlyCollection<string>(this.customJvms);
             }
         }
 
@@ -74,58 +59,11 @@
         }
 
         /// <summary>
-        /// Adds a custom JAVA_HOME to the list of available JVMs if the given directory is
-        /// a valid JAVA_HOME.
-        /// </summary>
-        /// <param name="javaHome">Path to a custom JAVA_HOME.</param>
-        /// <returns>true if the JVM was added, false if not.</returns>
-        public bool AddCustomJvm(string javaHome)
-        {
-            if (!JvmCollection.IsValidJavaHome(javaHome))
-                return false;
-
-            this.customJvms.Add(javaHome);
-            return true;
-        }
-
-        /// <summary>
-        /// Adds an installed JAVA_HOME to the list of available JVMs if the given directory is
-        /// a valid JAVA_HOME.
-        /// </summary>
-        /// <param name="version">Version of the Java installation.</param>
-        /// <param name="javaHome">Path to a custom JAVA_HOME.</param>
-        /// <returns>true if the JVM was added, false if not.</returns>
-        public bool AddInstalledJvm(string version, string javaHome)
-        {
-            if (!JvmCollection.IsValidJavaHome(javaHome))
-                return false;
-
-            if (this.installedJvms.ContainsKey(javaHome))
-            {
-                string currentVersion;
-                this.installedJvms.TryGetValue(javaHome, out currentVersion);
-
-                // i. e. "1.7" will get replaced by "1.7.0_10"...
-                if (version.Length > currentVersion.Length)
-                {
-                    this.installedJvms.Remove(javaHome);
-                    this.installedJvms.Add(javaHome, version);
-                }
-            }
-            else
-            {
-                this.installedJvms.Add(javaHome, version);
-            }
-
-            return true;
-        }
-
-        /// <summary>
         /// Checks if the given directory is a valid java installation (JAVA_HOME) directory.
         /// </summary>
         /// <param name="directory">Name of an existing directory</param>
         /// <returns>True if the given directory is a valid JAVA_HOME, false if not.</returns>
-        private static bool IsValidJavaHome(string directory)
+        public static bool IsValidJavaHome(string directory)
         {
             // Checks for an installed JDK in JAVA_HOME (Client VM)...
             string jvmDll = Path.Combine(directory, @"jre\bin\client\jvm.dll");
@@ -148,7 +86,43 @@
                 return true;
 
             // No Java found...
+            Logger.Log(string.Format(CultureInfo.CurrentCulture, Resources.LogJavaHomeIsNotValid, directory));
             return false;
+        }
+
+        /// <summary>
+        /// Adds an installed JAVA_HOME to the list of available JVMs if the given directory is
+        /// a valid JAVA_HOME.
+        /// </summary>
+        /// <param name="version">Version of the Java installation.</param>
+        /// <param name="javaHome">Path to a installed Java.</param>
+        /// <returns>true if the JVM was added, false if not.</returns>
+        public bool AddInstalledJvm(string version, string javaHome)
+        {
+            if (!JvmCollection.IsValidJavaHome(javaHome))
+                return false;
+
+            if (this.installedJvms.ContainsKey(javaHome))
+            {
+                string currentVersion;
+                this.installedJvms.TryGetValue(javaHome, out currentVersion);
+
+                // i. e. "1.7" will get replaced by "1.7.0_10"...
+                if (version.Length > currentVersion.Length)
+                {
+                    Logger.Log(string.Format(CultureInfo.CurrentCulture, Resources.LogReplaceVirtualMachine, version, currentVersion, javaHome));
+
+                    this.installedJvms.Remove(javaHome);
+                    this.installedJvms.Add(javaHome, version);
+                }
+            }
+            else
+            {
+                Logger.Log(string.Format(CultureInfo.CurrentCulture, Resources.LogAddVirtualMachine, version, javaHome));
+                this.installedJvms.Add(javaHome, version);
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -157,6 +131,8 @@
         /// <param name="regKey">Registry key (under HKLM) that contains a list of installed JVMs.</param>
         private void AddVirtualMachinesFromRegistry(string regKey)
         {
+            Logger.Log(string.Format(CultureInfo.CurrentCulture, Resources.LogAddVirtualMachinesFromRegistry, regKey));
+
             RegistryKey registry = Registry.LocalMachine.OpenSubKey(regKey);
             string[] jvmVersions = registry.GetSubKeyNames();
             foreach (string version in jvmVersions)

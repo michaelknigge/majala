@@ -11,21 +11,6 @@
     public static class JvmCollectionTest
     {
         /// <summary>
-        /// Tests adding of custom Java versions.
-        /// </summary>
-        [Test]
-        public static void TestCustomVersions()
-        {
-            JvmCollection auto = new JvmCollection();
-            JvmCollection manual = new JvmCollection(false);
-
-            Assert.IsFalse(manual.AddCustomJvm(@"C:\"));
-
-            foreach (KeyValuePair<string, string> pair in auto.InstalledVersions)
-                Assert.IsTrue(manual.AddCustomJvm(pair.Value));
-        }
-
-        /// <summary>
         /// Tests adding of installed Java versions.
         /// </summary>
         [Test]

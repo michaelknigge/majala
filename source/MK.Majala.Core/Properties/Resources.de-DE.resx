@@ -123,6 +123,45 @@
   <data name="ErrorSettingWorkingDirectory" xml:space="preserve">
     <value>Das Arbeitsverzeichnis konnte nicht gesetzt werden.</value>
   </data>
+  <data name="LogAddVirtualMachine" xml:space="preserve">
+    <value>Registriere verfügbare JVM Version {0} in Verzeichnis {1}.</value>
+  </data>
+  <data name="LogAddVirtualMachinesFromRegistry" xml:space="preserve">
+    <value>Ermittle alle installierten Java Versionen aus der Registrierungsdatenbank (Schlüssel {0}).</value>
+  </data>
+  <data name="LogJavaHomeIsNotValid" xml:space="preserve">
+    <value>Das Verzeichnis `{0}` enthält keine JVM.</value>
+  </data>
+  <data name="LogJvmIsOk" xml:space="preserve">
+    <value>JVM Version {0} ist akzeptabel und wird verwendet.</value>
+  </data>
+  <data name="LogJvmIsTooOld" xml:space="preserve">
+    <value>JVM Version {0} ist zu neu.</value>
+  </data>
+  <data name="LogJvmIsTooYoung" xml:space="preserve">
+    <value>JVM Version {0} ist zu alt.</value>
+  </data>
+  <data name="LogLoadCustomJvm" xml:space="preserve">
+    <value>Versuche JVM aus benutzerdefiniertem Verzeichnis `{0}` zu laden.</value>
+  </data>
+  <data name="LogLoadJvm" xml:space="preserve">
+    <value>Lade JVM aus Verzeichnis ´{0}´.</value>
+  </data>
+  <data name="LogParseCommandLineArguments" xml:space="preserve">
+    <value>Kommandozeilenparameter werden ausgewertet.</value>
+  </data>
+  <data name="LogReplaceVirtualMachine" xml:space="preserve">
+    <value>JVM Version {0} ersetzt Version  {1} in Verzeichnis {2}.</value>
+  </data>
+  <data name="LogRequiredJvmV1" xml:space="preserve">
+    <value>Ermittle eine passende JVM (kleinste Versionsnummer {0}).</value>
+  </data>
+  <data name="LogRequiredJvmV2" xml:space="preserve">
+    <value>Ermittle eine passende JVM (kleinste Versionsnummer {0}, größte Versionsnummer {1}).</value>
+  </data>
+  <data name="LogSetWorkingDirectory" xml:space="preserve">
+    <value>Wechlse ins Arbeitsverzeichnis `{0}`.</value>
+  </data>
   <data name="NoSuitableJavaFoundV1" xml:space="preserve">
     <value>Keine {0} Bit Java Version gefunden.</value>
   </data>
