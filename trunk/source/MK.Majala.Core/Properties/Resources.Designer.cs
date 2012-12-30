@@ -79,6 +79,123 @@ namespace MK.Majala.Core.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Registering available JVM version {0} in directory {1}. ähnelt.
+        /// </summary>
+        internal static string LogAddVirtualMachine {
+            get {
+                return ResourceManager.GetString("LogAddVirtualMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Getting all installed Java version from the registry (key {0}). ähnelt.
+        /// </summary>
+        internal static string LogAddVirtualMachinesFromRegistry {
+            get {
+                return ResourceManager.GetString("LogAddVirtualMachinesFromRegistry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The directory `{0}` contains no JVM. ähnelt.
+        /// </summary>
+        internal static string LogJavaHomeIsNotValid {
+            get {
+                return ResourceManager.GetString("LogJavaHomeIsNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die JVM version {0} is suitable and will be used. ähnelt.
+        /// </summary>
+        internal static string LogJvmIsOk {
+            get {
+                return ResourceManager.GetString("LogJvmIsOk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die JVM version {0} is too young. ähnelt.
+        /// </summary>
+        internal static string LogJvmIsTooOld {
+            get {
+                return ResourceManager.GetString("LogJvmIsTooOld", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die JVM version {0} is too old. ähnelt.
+        /// </summary>
+        internal static string LogJvmIsTooYoung {
+            get {
+                return ResourceManager.GetString("LogJvmIsTooYoung", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Trying to load JVM from user specified directory `{0}`. ähnelt.
+        /// </summary>
+        internal static string LogLoadCustomJvm {
+            get {
+                return ResourceManager.GetString("LogLoadCustomJvm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Loading JVM from directory `{0}`. ähnelt.
+        /// </summary>
+        internal static string LogLoadJvm {
+            get {
+                return ResourceManager.GetString("LogLoadJvm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Parsing command line arguments. ähnelt.
+        /// </summary>
+        internal static string LogParseCommandLineArguments {
+            get {
+                return ResourceManager.GetString("LogParseCommandLineArguments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die JVM version {0} replaces version {1} in directory {2}. ähnelt.
+        /// </summary>
+        internal static string LogReplaceVirtualMachine {
+            get {
+                return ResourceManager.GetString("LogReplaceVirtualMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Choosing a suitable JVM (minimum version {0}). ähnelt.
+        /// </summary>
+        internal static string LogRequiredJvmV1 {
+            get {
+                return ResourceManager.GetString("LogRequiredJvmV1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Choosing a suitable JVM (minimum version {0}, maximum version {1}). ähnelt.
+        /// </summary>
+        internal static string LogRequiredJvmV2 {
+            get {
+                return ResourceManager.GetString("LogRequiredJvmV2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Changeing working directory to `{0}`. ähnelt.
+        /// </summary>
+        internal static string LogSetWorkingDirectory {
+            get {
+                return ResourceManager.GetString("LogSetWorkingDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die No {0} bit Java version found. ähnelt.
         /// </summary>
         internal static string NoSuitableJavaFoundV1 {

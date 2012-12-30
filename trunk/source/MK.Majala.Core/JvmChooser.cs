@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Globalization;
     using System.IO;
     using Microsoft.Win32;
@@ -21,12 +22,14 @@
         /// </summary>
         /// <param name="userPath">User provided path (from the configuration file) to the JVM (JAVA_HOME).</param>
         /// <param name="fallback">True if a system wide instaled JVM should be loaded if the user provided JVM can not be loaded.</param>
-        /// <param name="minVersion">Minimum Java Version required (or an empty String).</param>
+        /// <param name="minVersion">Minimum Java Version required.</param>
         /// <param name="maxVersion">Maximum Java Version allowed (or an empty String).</param>
         /// <returns>Jvm object with a suitable loaded JVM.</returns>
         public static Jvm LoadJvm(string userPath, bool fallback, string minVersion, string maxVersion)
         {
-            if (IsValidJavaHome(userPath))
+            Logger.Log(string.Format(CultureInfo.CurrentCulture, Resources.LogLoadCustomJvm, userPath));
+
+            if (JvmCollection.IsValidJavaHome(userPath))
                 return new Jvm(userPath);
 
             if (!fallback)
@@ -39,7 +42,7 @@
         /// Looks up the most suitable Java Virtual Machine installed on the local system and loads it.
         /// If no suitable JVM can be found an MajalaExeption will be thrown.
         /// </summary>
-        /// <param name="minVersion">Minimum Java Version required (or an empty String).</param>
+        /// <param name="minVersion">Minimum Java Version required.</param>
         /// <param name="maxVersion">Maximum Java Version allowed (or an empty String).</param>
         /// <returns>Jvm object with a suitable loaded JVM.</returns>
         public static Jvm LoadJvm(string minVersion, string maxVersion)
@@ -51,88 +54,52 @@
         /// Locates the installed Java version and loads a JVM.  If no suitable JVM can be found
         /// a MajalaExeption will be thrown.
         /// </summary>
-        /// <param name="minVersion">Minimum Java Version required (or an empty String).</param>
+        /// <param name="minVersion">Minimum Java Version required.</param>
         /// <param name="maxVersion">Maximum Java Version allowed (or an empty String).</param>
         /// <returns>Jvm object with a suitable loaded JVM.</returns>
         private static Jvm LocateAndLoadInstalledJvm(string minVersion, string maxVersion)
         {
-            SortedDictionary<string, string> virtualMachines = new SortedDictionary<string, string>(new JavaVersionComparer());
-            AddVirtualMachinesFromRegistry(@"SOFTWARE\JavaSoft\Java Development Kit", virtualMachines);
-            AddVirtualMachinesFromRegistry(@"SOFTWARE\JavaSoft\Java Runtime Environment", virtualMachines);
-
-            //// TODO: most suitable Java Virtual Machine
-            int bits = SystemHelper.ProcessBitness();
-            if (minVersion.Length == 0 && maxVersion.Length == 0)
-                throw new MajalaException(string.Format(CultureInfo.CurrentCulture, Resources.NoSuitableJavaFoundV1, bits));
+            JvmCollection jvmCollection = new JvmCollection();
+            Version minRequiredVersion = new Version(minVersion);
+            Version maxRequiredVersion = maxVersion.Length > 0 ? new Version(maxVersion) : null;
 
             if (maxVersion.Length == 0)
-                throw new MajalaException(string.Format(CultureInfo.CurrentCulture, Resources.NoSuitableJavaFoundV2, bits, minVersion));
+                Logger.Log(string.Format(CultureInfo.CurrentCulture, Resources.LogRequiredJvmV1, minVersion));
+            else
+                Logger.Log(string.Format(CultureInfo.CurrentCulture, Resources.LogRequiredJvmV2, maxVersion));
 
-            throw new MajalaException(string.Format(CultureInfo.CurrentCulture, Resources.NoSuitableJavaFoundV3, bits, minVersion, maxVersion));
-        }
+            int bits = SystemHelper.ProcessBitness();
+            if (jvmCollection.InstalledVersions.Count == 0)
+                throw new MajalaException(string.Format(CultureInfo.CurrentCulture, Resources.NoSuitableJavaFoundV1, bits));
 
-        /// <summary>
-        /// Adds all JVMs registered in the given Registry key to the given Dictionary.
-        /// </summary>
-        /// <param name="regKey">Registry key (under HKLM) that contains a list of installed JVMs.</param>
-        /// <param name="virtualMachines">Dictionary where the JVMs are added.</param>
-        private static void AddVirtualMachinesFromRegistry(string regKey, SortedDictionary<string, string> virtualMachines)
-        {
-            RegistryKey registry = Registry.LocalMachine.OpenSubKey(regKey);
-            string[] jvmVersions = registry.GetSubKeyNames();
-            foreach (string version in jvmVersions)
+            foreach (KeyValuePair<string, string> p in jvmCollection.InstalledVersions)
             {
-                string key = regKey + @"\" + version + @"\" + "JavaHome";
-                string javaHome = (string)Registry.GetValue("HKEY_LOCAL_MACHINE", key, string.Empty);
+                string path = p.Key;
+                string version = p.Value;
+                Version currentVersion = new Version(version);
 
-                if (virtualMachines.ContainsKey(javaHome))
+                if (currentVersion.CompareTo(minRequiredVersion) >= 0)
                 {
-                    string currentVersion;
-                    virtualMachines.TryGetValue(javaHome, out currentVersion);
-
-                    // i. e. "1.7" will get replaced by "1.7.0_10"...
-                    if (version.Length > currentVersion.Length)
+                    if (maxVersion.Length == 0 || currentVersion.CompareTo(maxRequiredVersion) <= 0)
                     {
-                        virtualMachines.Remove(javaHome);
-                        virtualMachines.Add(javaHome, version);
+                        Logger.Log(string.Format(CultureInfo.CurrentCulture, Resources.LogJvmIsOk, currentVersion));
+                        return new Jvm(path);
+                    }
+                    else
+                    {
+                        Logger.Log(string.Format(CultureInfo.CurrentCulture, Resources.LogJvmIsTooYoung, currentVersion));
                     }
                 }
                 else
                 {
-                    virtualMachines.Add(javaHome, version);
+                    Logger.Log(string.Format(CultureInfo.CurrentCulture, Resources.LogJvmIsTooOld, currentVersion));
                 }
             }
-        }
 
-        /// <summary>
-        /// Checks if the given directory is a valid java installation (JAVA_HOME) directory.
-        /// </summary>
-        /// <param name="directory">Name of an existing directory</param>
-        /// <returns>True if the given directory is a valid JAVA_HOME, false if not.</returns>
-        private static bool IsValidJavaHome(string directory)
-        {
-            // Checks for an installed JDK in JAVA_HOME (Client VM)...
-            string jvmDll = Path.Combine(directory, @"jre\bin\client\jvm.dll");
-            if (File.Exists(jvmDll))
-                return true;
-
-            // Checks for an installed JDK in JAVA_HOME (Server VM)...
-            jvmDll = Path.Combine(directory, @"jre\bin\server\jvm.dll");
-            if (File.Exists(jvmDll))
-                return true;
-
-            // Checks for an installed JRE in JAVA_HOME (Client VM)...
-            jvmDll = Path.Combine(directory, @"bin\client\jvm.dll");
-            if (File.Exists(jvmDll))
-                return true;
-
-            // Checks for an installed JRE in JAVA_HOME (Server VM)...
-            jvmDll = Path.Combine(directory, @"bin\server\jvm.dll");
-            if (File.Exists(jvmDll))
-                return true;
-
-            // No Java found...
-            return false;
+            if (maxVersion.Length == 0)
+                throw new MajalaException(string.Format(CultureInfo.CurrentCulture, Resources.NoSuitableJavaFoundV2, bits, minVersion));
+            else
+                throw new MajalaException(string.Format(CultureInfo.CurrentCulture, Resources.NoSuitableJavaFoundV3, bits, minVersion, maxVersion));
         }
     }
 }

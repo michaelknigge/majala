@@ -1,6 +1,7 @@
 ﻿namespace MK.Majala.Core
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Security;
     using System.Text;
@@ -87,11 +88,13 @@
         /// </summary>
         private void SetWorkingDirectory()
         {
-            //// TODO throw MajalaException if needed!
             try
             {
                 if (this.settings.WorkingDirectory.Length != 0)
+                {
+                    Logger.Log(string.Format(CultureInfo.CurrentCulture, Resources.LogSetWorkingDirectory, this.settings.WorkingDirectory));
                     Directory.SetCurrentDirectory(this.settings.WorkingDirectory);
+                }
             }
             catch (IOException e)
             {
@@ -113,6 +116,8 @@
         /// <param name="args">All arguments from the command line.</param>
         private void ParseCommandLineArguments(string[] args)
         {
+            Logger.Log(string.Format(CultureInfo.CurrentCulture, Resources.LogParseCommandLineArguments, this.settings.WorkingDirectory));
+
             // TODO: implement ParseCommandLineArguments().
             //// TODO throw MajalaException if needed!
         }

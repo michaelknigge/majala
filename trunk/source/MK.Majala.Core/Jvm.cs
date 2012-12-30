@@ -1,9 +1,11 @@
 ﻿namespace MK.Majala.Core
 {
     using System;
+    using System.Globalization;
     using System.Runtime.CompilerServices;
     using System.Runtime.InteropServices;
     using System.Text;
+    using MK.Majala.Core.Properties;
 
     /// <summary>
     /// The Jvm class represents a loaded Java Virtual Machine.
@@ -19,12 +21,14 @@
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Jvm" /> class.
-        /// The contructor takes the name of the directory containing the jvm and
+        /// The contructor takes the name of the directory containing the JVM and
         /// loads the neccessary DLLs from this installation directory.
         /// </summary>
         /// <param name="directory">Base directory of the Java Virtual Machine (that is the installation directory of the JRE or JDK).</param>
         public Jvm(string directory)
         {
+            Logger.Log(string.Format(CultureInfo.CurrentCulture, Resources.LogLoadJvm, directory));
+
             // see http://jni4net.googlecode.com/svn/trunk/jni4net.n/src/jni/JNI.cs
             // see http://jni4net.sourceforge.net/
             if ((this.jvm = NativeMethods.LoadLibrary(directory + @"\jvm.dll")) == IntPtr.Zero)
