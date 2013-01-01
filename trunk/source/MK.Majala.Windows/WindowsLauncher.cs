@@ -18,7 +18,7 @@
         /// <param name="message">The message to be shown.</param>
         public override void ShowError(string message)
         {
-            MessageBox.Show(message, Resources.ErrorBoxCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(message, Resources.ErrorBoxCaption, MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, (MessageBoxOptions)0);
         }
 
         /// <summary>

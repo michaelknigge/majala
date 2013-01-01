@@ -120,6 +120,15 @@
   <data name="DirectoryContainsNoJava" xml:space="preserve">
     <value>Das Verzeichnis ´{0}´ enthält keine Java Installation.</value>
   </data>
+  <data name="ErrorCreatingJVM" xml:space="preserve">
+    <value>JVM konnte nicht erstellt werden, RC={0}.</value>
+  </data>
+  <data name="ErrorGettingProcAddress" xml:space="preserve">
+    <value>DLL `{0}` enthält nicht den benötigten Eintrittspunkt `{1}´.</value>
+  </data>
+  <data name="ErrorLoadingLibrary" xml:space="preserve">
+    <value>DLL `{0}` konnte nicht geladen werden.</value>
+  </data>
   <data name="ErrorSettingWorkingDirectory" xml:space="preserve">
     <value>Das Arbeitsverzeichnis konnte nicht gesetzt werden.</value>
   </data>
@@ -128,6 +137,9 @@
   </data>
   <data name="LogAddVirtualMachinesFromRegistry" xml:space="preserve">
     <value>Ermittle alle installierten Java Versionen aus der Registrierungsdatenbank (Schlüssel {0}).</value>
+  </data>
+  <data name="LogExceptionOccured" xml:space="preserve">
+    <value>Eine Ausnahmebedingung ist aufgetreten.</value>
   </data>
   <data name="LogJavaHomeIsNotValid" xml:space="preserve">
     <value>Das Verzeichnis `{0}` enthält keine JVM.</value>

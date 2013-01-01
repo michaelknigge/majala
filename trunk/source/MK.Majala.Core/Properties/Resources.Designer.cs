@@ -70,6 +70,33 @@ namespace MK.Majala.Core.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die JVM could not be created, RC={0}. ähnelt.
+        /// </summary>
+        internal static string ErrorCreatingJVM {
+            get {
+                return ResourceManager.GetString("ErrorCreatingJVM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die DLL `{0}` is missing the required entry point `{1}`. ähnelt.
+        /// </summary>
+        internal static string ErrorGettingProcAddress {
+            get {
+                return ResourceManager.GetString("ErrorGettingProcAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die DLL `{0}` could not be loaded. ähnelt.
+        /// </summary>
+        internal static string ErrorLoadingLibrary {
+            get {
+                return ResourceManager.GetString("ErrorLoadingLibrary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die The working directory could not be set. ähnelt.
         /// </summary>
         internal static string ErrorSettingWorkingDirectory {
@@ -93,6 +120,15 @@ namespace MK.Majala.Core.Properties {
         internal static string LogAddVirtualMachinesFromRegistry {
             get {
                 return ResourceManager.GetString("LogAddVirtualMachinesFromRegistry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die An exception occured. ähnelt.
+        /// </summary>
+        internal static string LogExceptionOccured {
+            get {
+                return ResourceManager.GetString("LogExceptionOccured", resourceCulture);
             }
         }
         
