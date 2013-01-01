@@ -61,6 +61,8 @@
     <Compile Include="FileAppender.cs" />
     <Compile Include="IAppender.cs" />
     <Compile Include="JavaVersionComparer.cs" />
+    <Compile Include="JavaVM.cs" />
+    <Compile Include="JniEnv.cs" />
     <Compile Include="Jvm.cs" />
     <Compile Include="JvmChooser.cs" />
     <Compile Include="JvmCollection.cs" />

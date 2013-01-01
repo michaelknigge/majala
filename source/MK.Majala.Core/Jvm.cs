@@ -12,11 +12,12 @@
     /// </summary>
     public class Jvm : IDisposable
     {
-        private IntPtr jvm;
+        private JavaVM jvm;
+        private JniEnv env;
+        private IntPtr jvmDll;
         private JNI_CreateJavaVM createJavaVm;
         private JNI_GetCreatedJavaVMs getCreatedJavaVms;
         private JNI_GetDefaultJavaVMInitArgs getDefaultJavaVMInitArgs;
-        private string version;
         private bool isDisposed;
 
         /// <summary>
@@ -31,91 +32,110 @@
 
             // see http://jni4net.googlecode.com/svn/trunk/jni4net.n/src/jni/JNI.cs
             // see http://jni4net.sourceforge.net/
-            if ((this.jvm = NativeMethods.LoadLibrary(directory + @"\jvm.dll")) == IntPtr.Zero)
-                throw new MajalaException();
+            string dllName = directory + @"\jvm.dll";
+            if ((this.jvmDll = NativeMethods.LoadLibrary(dllName)) == IntPtr.Zero)
+                throw new MajalaException(string.Format(CultureInfo.CurrentCulture, Resources.ErrorLoadingLibrary, dllName));
 
             IntPtr function;
 
-            if ((function = NativeMethods.GetProcAddress(this.jvm, "JNI_CreateJavaVM")) == IntPtr.Zero)
-                throw new MajalaException();
+            if ((function = NativeMethods.GetProcAddress(this.jvmDll, "JNI_CreateJavaVM")) == IntPtr.Zero)
+                throw new MajalaException(string.Format(CultureInfo.CurrentCulture, Resources.ErrorGettingProcAddress, dllName, "JNI_CreateJavaVM"));
             else
                 this.createJavaVm = (JNI_CreateJavaVM)Marshal.GetDelegateForFunctionPointer(function, typeof(JNI_CreateJavaVM));
 
-            if ((function = NativeMethods.GetProcAddress(this.jvm, "JNI_GetCreatedJavaVMs")) == IntPtr.Zero)
-                throw new MajalaException();
+            if ((function = NativeMethods.GetProcAddress(this.jvmDll, "JNI_GetCreatedJavaVMs")) == IntPtr.Zero)
+                throw new MajalaException(string.Format(CultureInfo.CurrentCulture, Resources.ErrorGettingProcAddress, dllName, "JNI_GetCreatedJavaVMs"));
             else
                 this.getCreatedJavaVms = (JNI_GetCreatedJavaVMs)Marshal.GetDelegateForFunctionPointer(function, typeof(JNI_GetCreatedJavaVMs));
 
-            if ((function = NativeMethods.GetProcAddress(this.jvm, "JNI_GetDefaultJavaVMInitArgs")) == IntPtr.Zero)
-                throw new MajalaException();
+            if ((function = NativeMethods.GetProcAddress(this.jvmDll, "JNI_GetDefaultJavaVMInitArgs")) == IntPtr.Zero)
+                throw new MajalaException(string.Format(CultureInfo.CurrentCulture, Resources.ErrorGettingProcAddress, dllName, "JNI_GetDefaultJavaVMInitArgs"));
             else
                 this.getDefaultJavaVMInitArgs = (JNI_GetDefaultJavaVMInitArgs)Marshal.GetDelegateForFunctionPointer(function, typeof(JNI_GetDefaultJavaVMInitArgs));
-
-            //// TODO determine Version 
-            this.version = string.Empty;
         }
 
-        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        private unsafe delegate JNIResult JNI_CreateJavaVM(out IntPtr pvm, out IntPtr penv, JavaVMInitArgs* args);
+        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
+        private unsafe delegate JniResult JNI_CreateJavaVM(out IntPtr pvm, out IntPtr penv, JavaVMInitArgs* args);
 
-        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        private delegate JNIResult JNI_GetCreatedJavaVMs(out IntPtr pvm, int size, [Out] out int size2);
+        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
+        private delegate JniResult JNI_GetCreatedJavaVMs(out IntPtr pvm, int size, [Out] out int size2);
 
-        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        private unsafe delegate JNIResult JNI_GetDefaultJavaVMInitArgs(JavaVMInitArgs* args);
+        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
+        private unsafe delegate JniResult JNI_GetDefaultJavaVMInitArgs(JavaVMInitArgs* args);
 
-        private enum JNIResult
+        /// <summary>
+        /// Result-Codes for JNI calls).
+        /// </summary>
+        public enum JniResult
         {
             /// <summary>
             /// Function called successfully.
             /// </summary>
-            JNI_OK = 0,
+            Ok = 0,
 
             /// <summary>
             /// Unknown error.
             /// </summary>
-            JNI_ERR = (-1),
+            Error = (-1),
 
             /// <summary>
             /// Thread detached from the VM.
             /// </summary>
-            JNI_EDETACHED = (-2),
+            Detached = (-2),
 
             /// <summary>
             /// JNI Version error.
             /// </summary>
-            JNI_EVERSION = (-3),
+            Version = (-3),
 
             /// <summary>
             /// Not enough memory.
             /// </summary>
-            JNI_ENOMEM = (-4),
+            NoMem = (-4),
 
             /// <summary>
             /// VM has been already created.
             /// </summary>
-            JNI_EEXIST = (-5),
+            Exist = (-5),
 
             /// <summary>
             /// Invalid arguments
             /// </summary>
-            JNI_EINVAL = (-6),
+            Inval = (-6),
+        }
+
+        private enum JNIVersion
+        {
+            /// <summary>
+            /// JNI Version 1.1.
+            /// </summary>
+            JNI_VERSION_1_1 = 0x00010001,
+
+            /// <summary>
+            /// JNI Version 1.2.
+            /// </summary>
+            JNI_VERSION_1_2 = 0x00010002,
+
+            /// <summary>
+            /// JNI Version 1.4.
+            /// </summary>
+            JNI_VERSION_1_4 = 0x00010004,
+
+            /// <summary>
+            /// JNI Version 1.6.
+            /// </summary>
+            JNI_VERSION_1_6 = 0x00010006,
         }
 
         /// <summary>
-        /// Gets the Version of the loaded JVM.
+        /// Loads the specified class and invokes the main method.
         /// </summary>
-        public string Version
+        /// <param name="className">Full qualified name of the class containing the main method.</param>
+        public void InvokeMain(string className)
         {
-            get { return this.version; }
-        }
+            this.CreateJavaVirtualMachine(this.CreateInitializationArguments());
+            this.GetStaticMethodID(this.FindClass(className), "main", "([Ljava/lang/String;)V");
 
-        /// <summary>
-        /// Loads and invokes the main method.
-        /// </summary>
-        /// <param name="method">Full qualified name of the main method.</param>
-        public void InvokeMain(string method)
-        {
             //// TODO: Invoke the main method
         }
 
@@ -155,8 +175,66 @@
                 //// TODO dispose managed resources here...
             }
 
-            if (this.jvm != null)
-                NativeMethods.FreeLibrary(this.jvm);
+            if (this.jvmDll != null)
+                NativeMethods.FreeLibrary(this.jvmDll);
+        }
+
+        /// <summary>
+        /// Creates a JVM.
+        /// </summary>
+        /// <param name="initArgs">Initialization arguments for the JVM.</param>
+        private unsafe void CreateJavaVirtualMachine(JavaVMInitArgs initArgs)
+        {
+            IntPtr env;
+            IntPtr jvm;
+
+            JniResult result = this.createJavaVm(out jvm, out env, &initArgs);
+            if (result != JniResult.Ok)
+                throw new MajalaException(string.Format(CultureInfo.CurrentCulture, Resources.ErrorCreatingJVM, result));
+
+            this.env = new JniEnv(env);
+            this.jvm = new JavaVM(jvm);
+        }
+
+        /// <summary>
+        /// Sets up all required JVM initialization arguments.
+        /// </summary>
+        /// <returns>A filled JavaVMInitArgs that can be used to create a JVM.</returns>
+        private JavaVMInitArgs CreateInitializationArguments()
+        {
+            JavaVMInitArgs args = new JavaVMInitArgs();
+
+            args.Version = (int)JNIVersion.JNI_VERSION_1_4;
+            args.IgnoreUnrecognized = 0x01;
+            args.OptionCount = 0;
+
+            //// TODO: set OptionCount and Options!
+
+            //// args.Options = 0;
+
+            return args;
+        }
+
+        /// <summary>
+        /// Looks up the given class.
+        /// </summary>
+        /// <param name="className">Name of the class to be looked up.</param>
+        /// <returns>A pointer to the class.</returns>
+        private IntPtr FindClass(string className)
+        {
+            return this.env.FindClass(className);
+        }
+
+        /// <summary>
+        /// Gets the given method.
+        /// </summary>
+        /// <param name="javaClass">Class containing the method.</param>
+        /// <param name="methodName">Name of the class to be looked up.</param>
+        /// <param name="methodSignature">Signarure of the method.</param>
+        /// <returns>A pointer to the static method.</returns>
+        private IntPtr GetStaticMethodID(IntPtr javaClass, string methodName, string methodSignature)
+        {
+            return this.env.GetStaticMethodId(javaClass, methodName, methodSignature);
         }
 
         [StructLayout(LayoutKind.Sequential), NativeCppClass]
@@ -165,7 +243,7 @@
             public int Version;
             public int OptionCount;
             public JavaVMOption* Options;
-            public byte Unrecognized;
+            public byte IgnoreUnrecognized;
         }
 
         [StructLayout(LayoutKind.Sequential), NativeCppClass]
