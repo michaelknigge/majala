@@ -76,32 +76,32 @@
             /// <summary>
             /// Unknown error.
             /// </summary>
-            Error = (-1),
+            Error = -1,
 
             /// <summary>
             /// Thread detached from the VM.
             /// </summary>
-            Detached = (-2),
+            Detached = -2,
 
             /// <summary>
             /// JNI Version error.
             /// </summary>
-            Version = (-3),
+            Version = -3,
 
             /// <summary>
             /// Not enough memory.
             /// </summary>
-            NoMem = (-4),
+            NoMem = -4,
 
             /// <summary>
             /// VM has been already created.
             /// </summary>
-            Exist = (-5),
+            Exist = -5,
 
             /// <summary>
             /// Invalid arguments
             /// </summary>
-            Inval = (-6),
+            Inval = -6,
         }
 
         private enum JNIVersion
@@ -134,9 +134,13 @@
         public void InvokeMain(string className)
         {
             this.CreateJavaVirtualMachine(this.CreateInitializationArguments());
-            this.GetStaticMethodID(this.FindClass(className), "main", "([Ljava/lang/String;)V");
 
-            //// TODO: Invoke the main method
+            IntPtr javaClass = this.FindClass(className);
+            IntPtr javaMethod = this.GetStaticMethodID(javaClass, "main", "([Ljava/lang/String;)V");
+
+            //// TODO: create argument array and pass it to CallStaticVoidMethod()...
+            this.CallStaticVoidMethod(javaClass, javaMethod, null);
+            this.DestroyJavaVirtualMachine();
         }
 
         /// <summary>
@@ -185,6 +189,8 @@
         /// <param name="initArgs">Initialization arguments for the JVM.</param>
         private unsafe void CreateJavaVirtualMachine(JavaVMInitArgs initArgs)
         {
+            Logger.Log(Resources.LogCreateJavaVirtualMachine);
+
             IntPtr env;
             IntPtr jvm;
 
@@ -197,11 +203,25 @@
         }
 
         /// <summary>
+        /// Destroys a previously created JVM.
+        /// </summary>
+        private unsafe void DestroyJavaVirtualMachine()
+        {
+            Logger.Log(Resources.LogDestroyJavaVirtualMachine);
+
+            JniResult result = this.jvm.Destroy();
+            if (result != JniResult.Ok)
+                throw new MajalaException(string.Format(CultureInfo.CurrentCulture, Resources.ErrorDestroyingJVM, result));
+        }
+
+        /// <summary>
         /// Sets up all required JVM initialization arguments.
         /// </summary>
         /// <returns>A filled JavaVMInitArgs that can be used to create a JVM.</returns>
         private JavaVMInitArgs CreateInitializationArguments()
         {
+            Logger.Log(Resources.LogCreateInitializationArguments);
+
             JavaVMInitArgs args = new JavaVMInitArgs();
 
             args.Version = (int)JNIVersion.JNI_VERSION_1_4;
@@ -222,6 +242,7 @@
         /// <returns>A pointer to the class.</returns>
         private IntPtr FindClass(string className)
         {
+            Logger.Log(string.Format(CultureInfo.CurrentCulture, Resources.LogFindClass, className));
             return this.env.FindClass(className);
         }
 
@@ -234,7 +255,20 @@
         /// <returns>A pointer to the static method.</returns>
         private IntPtr GetStaticMethodID(IntPtr javaClass, string methodName, string methodSignature)
         {
+            Logger.Log(string.Format(CultureInfo.CurrentCulture, Resources.LogGetStaticMethodID, methodName, methodSignature));
             return this.env.GetStaticMethodId(javaClass, methodName, methodSignature);
+        }
+
+        /// <summary>
+        /// Class the given method.
+        /// </summary>
+        /// <param name="javaClass">Class containing the method.</param>
+        /// <param name="javaMethod">Method to be called.</param>
+        /// <param name="arguments">Command line arguments.</param>
+        private void CallStaticVoidMethod(IntPtr javaClass, IntPtr javaMethod, IntPtr[] arguments)
+        {
+            Logger.Log(Resources.LogCallStaticVoidMethod);
+            this.env.CallStaticVoidMethod(javaClass, javaMethod, arguments);
         }
 
         [StructLayout(LayoutKind.Sequential), NativeCppClass]

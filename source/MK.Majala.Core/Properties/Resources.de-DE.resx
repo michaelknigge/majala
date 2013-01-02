@@ -123,6 +123,9 @@
   <data name="ErrorCreatingJVM" xml:space="preserve">
     <value>JVM konnte nicht erstellt werden, RC={0}.</value>
   </data>
+  <data name="ErrorDestroyingJVM" xml:space="preserve">
+    <value>JVM konnte nicht zerstrört werden, RC={0}.</value>
+  </data>
   <data name="ErrorGettingProcAddress" xml:space="preserve">
     <value>DLL `{0}` enthält nicht den benötigten Eintrittspunkt `{1}´.</value>
   </data>
@@ -138,8 +141,26 @@
   <data name="LogAddVirtualMachinesFromRegistry" xml:space="preserve">
     <value>Ermittle alle installierten Java Versionen aus der Registrierungsdatenbank (Schlüssel {0}).</value>
   </data>
+  <data name="LogCallStaticVoidMethod" xml:space="preserve">
+    <value>Aufruf der statischen Methode.</value>
+  </data>
+  <data name="LogCreateInitializationArguments" xml:space="preserve">
+    <value>Erstelle die Initialisierungs-Parameter für die JVM.</value>
+  </data>
+  <data name="LogCreateJavaVirtualMachine" xml:space="preserve">
+    <value>Erstelle JVM</value>
+  </data>
+  <data name="LogDestroyJavaVirtualMachine" xml:space="preserve">
+    <value>Zerstöre JVM.</value>
+  </data>
   <data name="LogExceptionOccured" xml:space="preserve">
     <value>Eine Ausnahmebedingung ist aufgetreten.</value>
+  </data>
+  <data name="LogFindClass" xml:space="preserve">
+    <value>Suche Klasse `{0}`.</value>
+  </data>
+  <data name="LogGetStaticMethodID" xml:space="preserve">
+    <value>Ermittle Methode `{0}` (Methodensignatur `{1}`).</value>
   </data>
   <data name="LogJavaHomeIsNotValid" xml:space="preserve">
     <value>Das Verzeichnis `{0}` enthält keine JVM.</value>

@@ -79,6 +79,15 @@ namespace MK.Majala.Core.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die JVM could not be destroyed, RC={0}. ähnelt.
+        /// </summary>
+        internal static string ErrorDestroyingJVM {
+            get {
+                return ResourceManager.GetString("ErrorDestroyingJVM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die DLL `{0}` is missing the required entry point `{1}`. ähnelt.
         /// </summary>
         internal static string ErrorGettingProcAddress {
@@ -124,11 +133,65 @@ namespace MK.Majala.Core.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Calling static method. ähnelt.
+        /// </summary>
+        internal static string LogCallStaticVoidMethod {
+            get {
+                return ResourceManager.GetString("LogCallStaticVoidMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Creating initialization arguments for JVM ähnelt.
+        /// </summary>
+        internal static string LogCreateInitializationArguments {
+            get {
+                return ResourceManager.GetString("LogCreateInitializationArguments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Creating JVM ähnelt.
+        /// </summary>
+        internal static string LogCreateJavaVirtualMachine {
+            get {
+                return ResourceManager.GetString("LogCreateJavaVirtualMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Destroying JVM. ähnelt.
+        /// </summary>
+        internal static string LogDestroyJavaVirtualMachine {
+            get {
+                return ResourceManager.GetString("LogDestroyJavaVirtualMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die An exception occured. ähnelt.
         /// </summary>
         internal static string LogExceptionOccured {
             get {
                 return ResourceManager.GetString("LogExceptionOccured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Looking up class `{0}`. ähnelt.
+        /// </summary>
+        internal static string LogFindClass {
+            get {
+                return ResourceManager.GetString("LogFindClass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Getting method `{0}` (signature `{1}`). ähnelt.
+        /// </summary>
+        internal static string LogGetStaticMethodID {
+            get {
+                return ResourceManager.GetString("LogGetStaticMethodID", resourceCulture);
             }
         }
         
