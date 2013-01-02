@@ -123,6 +123,9 @@
   <data name="ErrorCreatingJVM" xml:space="preserve">
     <value>JVM could not be created, RC={0}.</value>
   </data>
+  <data name="ErrorDestroyingJVM" xml:space="preserve">
+    <value>JVM could not be destroyed, RC={0}.</value>
+  </data>
   <data name="ErrorGettingProcAddress" xml:space="preserve">
     <value>DLL `{0}` is missing the required entry point `{1}`.</value>
   </data>
@@ -138,8 +141,26 @@
   <data name="LogAddVirtualMachinesFromRegistry" xml:space="preserve">
     <value>Getting all installed Java version from the registry (key {0}).</value>
   </data>
+  <data name="LogCallStaticVoidMethod" xml:space="preserve">
+    <value>Calling static method.</value>
+  </data>
+  <data name="LogCreateInitializationArguments" xml:space="preserve">
+    <value>Creating initialization arguments for JVM</value>
+  </data>
+  <data name="LogCreateJavaVirtualMachine" xml:space="preserve">
+    <value>Creating JVM</value>
+  </data>
+  <data name="LogDestroyJavaVirtualMachine" xml:space="preserve">
+    <value>Destroying JVM.</value>
+  </data>
   <data name="LogExceptionOccured" xml:space="preserve">
     <value>An exception occured.</value>
+  </data>
+  <data name="LogFindClass" xml:space="preserve">
+    <value>Looking up class `{0}`.</value>
+  </data>
+  <data name="LogGetStaticMethodID" xml:space="preserve">
+    <value>Getting method `{0}` (signature `{1}`).</value>
   </data>
   <data name="LogJavaHomeIsNotValid" xml:space="preserve">
     <value>The directory `{0}` contains no JVM.</value>

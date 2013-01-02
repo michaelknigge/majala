@@ -14,6 +14,7 @@
         private FindClassDelegate findClass;
         private GetStaticMethodIdDelegate getStaticMethodId;
         private ExceptionCheckDelegate exceptionCheck;
+        private CallStaticVoidMethodDelegate callStaticVoidMethod;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JniEnv" /> class.
@@ -28,6 +29,7 @@
             this.findClass = (FindClassDelegate)Marshal.GetDelegateForFunctionPointer(functions.FindClass, typeof(FindClassDelegate));
             this.getStaticMethodId = (GetStaticMethodIdDelegate)Marshal.GetDelegateForFunctionPointer(functions.GetStaticMethodID, typeof(GetStaticMethodIdDelegate));
             this.exceptionCheck = (ExceptionCheckDelegate)Marshal.GetDelegateForFunctionPointer(functions.ExceptionCheck, typeof(ExceptionCheckDelegate));
+            this.callStaticVoidMethod = (CallStaticVoidMethodDelegate)Marshal.GetDelegateForFunctionPointer(functions.CallStaticVoidMethod, typeof(CallStaticVoidMethodDelegate));
         }
 
         [UnmanagedFunctionPointer(CallingConvention.Winapi)]
@@ -38,6 +40,9 @@
 
         [UnmanagedFunctionPointer(CallingConvention.Winapi)]
         private unsafe delegate byte ExceptionCheckDelegate(IntPtr env);
+
+        [UnmanagedFunctionPointer(CallingConvention.Winapi)]
+        private unsafe delegate int CallStaticVoidMethodDelegate(IntPtr env, IntPtr jacaClass, IntPtr javaMethod, params IntPtr[] args);
 
         /// <summary>
         /// Finds the given class.
@@ -67,9 +72,21 @@
             return result;
         }
 
+        /// <summary>
+        /// Class the given method.
+        /// </summary>
+        /// <param name="javaClass">Class containing the method.</param>
+        /// <param name="javaMethod">Method to be called.</param>
+        /// <param name="arguments">Command line arguments.</param>
+        public void CallStaticVoidMethod(IntPtr javaClass, IntPtr javaMethod, IntPtr[] arguments)
+        {
+            this.callStaticVoidMethod.Invoke(this.env, javaClass, javaMethod, arguments);
+            this.CheckForJavaException();
+        }
+
         private unsafe void CheckForJavaException()
         {
-            // exceptionCheck() returns a boolean Value describing if an exception is pending or not.
+            // exceptionCheck() returns a boolean value describing if an exception is pending or not.
             // On the next JNI call the exception will be thrown  - for this reason we call
             // exceptionCheck() twice...
             if (this.exceptionCheck(this.env) != 0)
